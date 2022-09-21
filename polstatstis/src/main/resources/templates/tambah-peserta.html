@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{/img/logo.png}">
+    <title>Tambah Peserta</title>
+    <link rel="stylesheet" th:href="@{/css/tambah-peserta.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+</head>
+<body>
+    <!-- Sidebar : navigasi halaman lainnya -->
+    <div class="sidebar">
+        <div class="logo-details">
+            <img th:src="@{/img/logo.png}">
+            <div class="logo-name">
+                SPMB
+                <p>POLITEKNIK STATISTIKA STIS</p>
+            </div>
+            <i class="fa-solid fa-bars" id="btn"></i>
+        </div>
+        <ul class="nav-list">
+            <li>
+                <a th:href="@{'/dashboard'}">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="links-name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a th:href="@{'/daftar-pengawas'}">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <span class="links-name">Pengawas</span>
+                </a>
+                <span class="tooltip">Pengawas</span>
+            </li>
+            <li>
+                <a th:href="@{'/daftar-peserta'}">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="links-name">Peserta</span>
+                </a>
+                <span class="tooltip">Peserta</span>
+            </li>
+            <li>
+                <a th:href="@{'/jadwal'}">
+                    <i class="fa-solid fa-calendar-alt"></i>
+                    <span class="links-name">Jadwal</span>
+                </a>
+                <span class="tooltip">Jadwal</span>
+            </li>
+            <li>
+                <a th:href="@{'/daftar-laporan'}">
+                    <i class="fa-solid fa-file-alt"></i>
+                    <span class="links-name">Laporan</span>
+                </a>
+                <span class="tooltip">Laporan</span>
+            </li>
+            <li class="profile">
+                <div class="profile-details">
+                    <!-- <img src="profile.jpg" alt="profileImg"> -->
+                    <div class="name_status">
+                        <div class="name">
+                            <span sec:authentication="name"></span>
+                        </div>
+                        <div class="status">
+                            <span sec:authentication="principal.authorities"></span>
+                        </div>
+                    </div>
+                </div>
+                <a th:href="@{'/logout'}" id="logout">
+                    <i class="fa-solid fa-sign-out-alt" id="logout"></i>
+                    <span class="tooltip">Log Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- Section : konten yang ditampilkan -->
+    <section>
+        <div class="container">
+            <!-- Header : judul halaman dan akun aktif pengguna -->
+            <div class="header">
+                <h3>Tambah Peserta</h3>
+                <div class="user-profile">
+                    <div class="status">
+                        <h4 sec:authentication="name"></h4>
+                        <p sec:authentication="principal.authorities"></p>
+                    </div>
+                    <div class="photo">
+                        <img src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" width="50">
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <form th:object="${peserta}" th:action="@{/save-peserta}" method="post">
+                    <div class="form first">
+                        <div class="details personal">
+                            <span class="title">Data Diri Peserta</span>
+        
+                            <div class="fields">
+
+                                <div class="input-field">
+                                    <label>Nomor Induk Kependudukan</label>
+                                    <input type="text" id="nik" th:field="*{nik}"  placeholder="masukkan NIK" required>
+                                </div>
+
+                                <div class="input-field">
+                                    <label>Nama Lengkap</label>
+                                    <input type="text" id="nama" th:field="*{nama}" placeholder="Masukkan nama lengkap" required>
+                                </div>
+
+                                <div class="input-field">
+                                    <label>Jenis Kelamin</label>
+                                    <select id="jenis_kelamin" th:field="*{jenis_kelamin}" required>
+                                        <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                                        <option value="Laki-Laki">Laki-Laki</option>
+                                        <option value="Perempuan">Perempuan</option>
+                                    </select>
+                                </div>
+        
+                                <div class="input-field">
+                                    <label>Tanggal Lahir</label>
+                                    <input type="date" id="tanggal_lahir" th:field="*{tanggal_lahir}" placeholder="Masukkan tanggal lahir" required>
+                                </div>
+        
+                                <div class="input-field">
+                                    <label>Alamat</label>
+                                    <input type="text" id="alamat" th:field="*{alamat}" placeholder="Masukkan alamat" required>
+                                </div>
+
+                                <div class="input-field">
+                                    <label for="photo">Pas Foto</label>
+                                    <div class="input-photo">
+                                        <input type="file" id="gambar" th:field="*{gambar}" value="Pilih foto" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="details ID">
+                            <span class="title">Detail Pelaksanaan Tes</span>
+        
+                            <div class="fields">
+                                <div class="input-field">
+                                    <label>Nomor Tes</label>
+                                    <input type="text" id="nomor_test" th:field="*{id}" placeholder="Masukkan nomor tes">
+                                </div>
+        
+                                <div class="input-field">
+                                    <label>Prodi</label>
+                                    <select th:field="*{prodi}" id="prodi" required>
+                                        <option value="" disabled selected>Pilihan prodi</option>
+                                        <option value="D3 Statistika">D3 Statistika</option>
+                                        <option value="D4 Statistika">D4 Statistika</option>
+                                        <option value="D4 Komputasi Statistik">D4 Komputasi Statistik</option>
+                                    </select>
+                                </div>
+        
+                                <div class="input-field">
+                                    <label>Plihan Formasi</label>
+                                    <select th:field="*{formasi}" id="formasi" required>
+                                        <option value="" disabled selected>Pilihan formasi</option>
+                                        <option value="BPS Pusat">BPS Pusat</option>
+                                        <option value="Aceh">Aceh</option>
+                                        <option value="Sumatera Utara">Sumatera Utara</option>
+                                        <option value="Sumatera Barat">Sumatera Barat</option>
+                                        <option value="Riau">Riau</option>
+                                        <option value="Jambi">Jambi</option>
+                                        <option value="Sumatera Selatan">Sumatera Selatan</option>
+                                        <option value="Bengkulu">Bengkulu</option>
+                                        <option value="Lampung">Lampung</option>
+                                        <option value="Banten">Banten</option>
+                                        <option value="DKI Jakarta">DKI Jakarta</option>
+                                        <option value="Jawa Barat">Jawa Barat</option>
+                                        <option value="Jawa Tengah">Jawa Tengah</option>
+                                        <option value="DI Yogyakarta">DI Yogyakarta</option>
+                                        <option value="Jawa Timur">Jawa Timur</option>
+                                        <option value="Bali">Bali</option>
+                                        <option value="Nusa Tenggara Barat">Nusa Tenggara Barat</option>
+                                        <option value="Nusa Tenggara Timur">Nusa Tenggara Timur</option>
+                                        <option value="Kalimantan Barat">Kalimantan Barat</option>
+                                        <option value="Kalimantan Tengah">Kalimantan Tengah</option>
+                                        <option value="Kalimantan Selatan">Kalimantan Selatan</option>
+                                        <option value="Kalimantan Timur">Kalimantan Timur</option>
+                                        <option value="Kalimantan Utara">Kalimantan Utara</option>
+                                        <option value="Gorontalo">Gorontalo</option>
+                                        <option value="Sulawesi Utara">Sulawesi Utara</option>
+                                        <option value="Sulawesi Tengah">Sulawesi Tengah</option>
+                                        <option value="Sulawesi Selatan">Sulawesi Selatan</option>
+                                        <option value="Sulawesi Tenggara">Sulawesi Tenggara</option>
+                                        <option value="Sulawesi Barat">Sulawesi Barat</option>
+                                        <option value="Maluku">Maluku</option>
+                                        <option value="Maluku Utara">Maluku Utara</option>
+                                        <option value="Papua">Papua</option>
+                                        <option value="Papua Barat">Papua Barat</option>
+                                    </select>
+                                </div>
+        
+                                <div class="input-field">
+                                    <label>Jadwal Tes Tahap 1</label>
+                                    <input type="date" th:field="*{tahap_1}" id="tahap_1" required>
+                                </div>
+
+                                <div class="input-field">
+                                    <label>Jadwal Tes Tahap  2</label>
+                                    <input type="date" nama="tahap_2" id="tahap_2">
+                                </div>
+
+                                <div class="input-field">
+                                    <label>Jadwal Tes Tahap  3</label>
+                                    <input type="date" nama="tahap_2" id="tahap_3">
+                                </div>
+
+                            </div>
+
+                            <div class="buttons">
+                                <input type="reset" class="reset" id="button" value="Batal" onclick="location.href='/daftar-peserta'"></input>
+
+                                <input type="submit" class="submit" id="button" value="Tambah"></input>
+                            </div>
+                        </div> 
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script th:src="@{/js/script.js}"></script>
+    <script src="https://kit.fontawesome.com/6265d9d0e3.js" crossorigin="anonymous"></script>
+</body>
+</html>

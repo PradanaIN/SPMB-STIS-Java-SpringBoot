@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{/img/logo.png}">
+    <title>Daftar Pengawas</title>
+    <link rel="stylesheet" th:href="@{/css/daftar-pengawas.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+</head>
+<body>
+    <!-- Sidebar : navigasi halaman lainnya -->
+    <div class="sidebar">
+        <div class="logo-details">
+            <img th:src="@{/img/logo.png}">
+            <div class="logo-name">
+                SPMB
+                <p>POLITEKNIK STATISTIKA STIS</p>
+            </div>
+            <i class="fa-solid fa-bars" id="btn"></i>
+        </div>
+        <ul class="nav-list">
+            <li>
+                <a th:href="@{'/dashboard'}">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="links-name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a th:href="@{'/daftar-pengawas'}">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <span class="links-name">Pengawas</span>
+                </a>
+                <span class="tooltip">Pengawas</span>
+            </li>
+            <li>
+                <a th:href="@{'/daftar-peserta'}">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="links-name">Peserta</span>
+                </a>
+                <span class="tooltip">Peserta</span>
+            </li>
+            <li>
+                <a th:href="@{'/jadwal'}">
+                    <i class="fa-solid fa-calendar-alt"></i>
+                    <span class="links-name">Jadwal</span>
+                </a>
+                <span class="tooltip">Jadwal</span>
+            </li>
+            <li>
+                <a th:href="@{'/daftar-laporan'}">
+                    <i class="fa-solid fa-file-alt"></i>
+                    <span class="links-name">Laporan</span>
+                </a>
+                <span class="tooltip">Laporan</span>
+            </li>
+            <li class="profile">
+                <div class="profile-details">
+                    <!-- <img src="profile.jpg" alt="profileImg"> -->
+                    <div class="name_status">
+                        <div class="name">
+                            <span sec:authentication="name"></span>
+                        </div>
+                        <div class="status">
+                            <span sec:authentication="principal.authorities"></span>
+                        </div>
+                    </div>
+                </div>
+                <a th:href="@{'/logout'}" id="logout">
+                    <i class="fa-solid fa-sign-out-alt" id="logout"></i>
+                    <span class="tooltip">Log Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- Section : konten yang ditampilkan -->
+    <section>
+        <div class="container">
+            <!-- Header : judul halaman dan akun aktif pengguna -->
+            <div class="header">
+                <div class="top">
+                    <h3>Daftar Pengawas</h3>
+                    <div class="user-profile">
+                        <div class="status">
+                            <h4 sec:authentication="name"></h4>
+                            <p sec:authentication="principal.authorities"></p>
+                        </div>
+                        <div class="photo">
+                            <img src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" width="50">
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <form class="search" th:object="${searchForm}" th:action="@{'/search-pengawas'}" method="post">
+                        <!-- icon search -->
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="search" placeholder="Cari" th:field="*{keyword}" autocomplete="off">
+                    </form>
+                    <div class="add" sec:authorize="hasAnyAuthority('Panitia SPMB')">
+                        <a th:href="@{'/tambah-pengawas'}">
+                            <i class="fa-solid fa-plus"></i>
+                            <p>Pengawas Baru</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Content : tabel daftar pengawas spmb -->
+            <div class="content">
+                <!-- box card untuk profil daftar pengawas -->
+                <div class="box-container">
+                    <!--- 1 -->
+                    <div class="box" th:each="pengawas : ${pengawas}">
+                        <img th:src="@{${'/../img/pengawas/' + pengawas.gambar}}">
+                        <div class="details">
+                            <div class="status">
+                                <h4 th:text="${pengawas.nama}"></h4>
+                                <p th:text="${pengawas.alamat}"></p>
+                            </div>
+                            <div class="action" sec:authorize="hasAnyAuthority('Panitia SPMB')">
+                                <button>
+                                    <a th:href="@{'/edit-pengawas/'+${pengawas.id}}">
+                                        <i class="fa-solid fa-edit"></i>
+                                    </a>
+                                </button>
+                                <button>
+                                    <a th:href="@{'/delete-pengawas/'+${pengawas.id}}" onclick="return confirm('Hapus data terpilih?')">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagination">
+                <a href="#" class="previous"><i class="fa fa-angle-left"></i></a>
+                <a href="#" class="btn">1</a>
+                <a href="#" class="btn">2</a>
+                <a href="#" class="btn">3</a>
+                <a href="#" class="next"><i class="fa fa-angle-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script th:src="@{/js/script.js}"></script>
+    <script src="https://kit.fontawesome.com/6265d9d0e3.js" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" th:href="@{/img/logo.png}">
+    <title>Laporan</title>
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/laporan-upload.css}">
+    <link rel="stylesheet" th:href="@{/css/upload.css}">
+</head>
+<body>
+    <!-- Sidebar : navigasi halaman lainnya -->
+    <div class="sidebar">
+        <div class="logo-details">
+            <img th:src="@{/img/logo.png}">
+            <div class="logo-name">
+                SPMB
+                <p>POLITEKNIK STATISTIKA STIS</p>
+            </div>
+            <i class="fa-solid fa-bars" id="btn"></i>
+        </div>
+        <ul class="nav-list">
+            <li>
+                <a th:href="@{'/dashboard'}">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="links-name">Dashboard</span>
+                </a>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <a th:href="@{'/daftar-pengawas'}">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <span class="links-name">Pengawas</span>
+                </a>
+                <span class="tooltip">Pengawas</span>
+            </li>
+            <li>
+                <a th:href="@{'/daftar-peserta'}">
+                    <i class="fa-solid fa-user"></i>
+                    <span class="links-name">Peserta</span>
+                </a>
+                <span class="tooltip">Peserta</span>
+            </li>
+            <li>
+                <a th:href="@{'/jadwal'}">
+                    <i class="fa-solid fa-calendar-alt"></i>
+                    <span class="links-name">Jadwal</span>
+                </a>
+                <span class="tooltip">Jadwal</span>
+            </li>
+            <li>
+                <a th:href="@{'/daftar-laporan'}">
+                    <i class="fa-solid fa-file-alt"></i>
+                    <span class="links-name">Laporan</span>
+                </a>
+                <span class="tooltip">Laporan</span>
+            </li>
+            <li class="profile">
+                <div class="profile-details">
+                    <!-- <img src="profile.jpg" alt="profileImg"> -->
+                    <div class="name_status">
+                        <div class="name">
+                            <span sec:authentication="name"></span>
+                        </div>
+                        <div class="status">
+                            <span sec:authentication="principal.authorities"></span>
+                        </div>
+                    </div>
+                </div>
+                <a th:href="@{'/logout'}" id="logout">
+                    <i class="fa-solid fa-sign-out-alt" id="logout"></i>
+                    <span class="tooltip">Log Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- Section : konten yang ditampilkan -->
+    <section>
+        <div class="container">
+            <!-- Header : judul halaman dan akun aktif pengguna -->
+            <div class="header">
+                <h3>Laporan</h3>
+                <div class="user-profile">
+                    <div class="status">
+                        <h4 sec:authentication="name"></h4>
+                        <p sec:authentication="principal.authorities"></p>
+                    </div>
+                    <div class="photo">
+                        <img src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" width="50">
+                    </div>
+                </div>
+            </div>
+            <!-- Upload Files  -->
+            <div class="content">
+                <form action="#" method="post" id="form-upload" th:action=@{/uploadFiles} enctype="multipart/form-data">
+                    <div class="form first">
+                        
+                        <div class="details personal">
+                            <span class="title">Petunjuk Pelaporan Tes</span>
+                            <div class="fields">
+                                <ul>
+                                    <li>
+                                        <p>1. Silahkan pilih file yang akan diupload</p>
+                                    </li>
+                                    <li>
+                                        <p>2. Semua file dikompresi kedalam format .zip/.rar (max. 1GB)</p>
+                                    </li>
+                                    <li>
+                                        <p>3. Format penamaan file : [TahapTes]_[LokasiTes]_[SesiTes]_[NamaPengawas]</p>
+                                        <p style="text-indent: 1em;">Contoh penamaan file : Tahap1_Zoom001_Sesi1_GojoSatoru</p>
+                                    </li>
+                                    <li>
+                                        <p>4. Tunggu sampai file yang dipilih berhasil dimuat</p>
+                                    <li>
+                                        <p>5. Klik tombol "Upload"</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <span class="title">Upload Laporan Tes</span>
+                            <div class="fields">
+                                <div class="wrapper">
+                                    <input class="file-input" id="input-file" type="file" name="files" multiple hidden required>
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p>Klik Dua Kali Untuk Memilih File</p>
+                                </div>
+                                <div id="section" class="progress-area"></div>
+                                <div id="section" class="uploaded-area"></div>
+                            </div>
+                        </div>
+
+                        <div class="buttons">
+                                    <input type="reset" class="reset" id="button" name="reset" value="Batal" onclick="location.href='/laporan'"></input>
+
+                                    
+                                    <input type="submit" class="submit" id="button" name="submit" value="Upload"></input>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript -->
+    <script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/upload.js}"></script>
+    <script src="https://kit.fontawesome.com/6265d9d0e3.js" crossorigin="anonymous"></script>
+</body>
+</html>
